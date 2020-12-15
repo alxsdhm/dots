@@ -1,0 +1,174 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+[colors]
+
+background = ${xrdb:color0:#222}
+color1 = ${xrdb:color2}
+color2 = ${xrdb:color4}
+color3 = ${xrdb:color6}
+
+;  _                    
+; | |__   __ _ _ __ ___ 
+; | '_ \ / _` | '__/ __|
+; | |_) | (_| | |  \__ \
+; |_.__/ \__,_|_|  |___/
+
+[bar/base]
+font-0 = Orator Std:size=12:style=Medium;2
+font-1 = Orator Std:size=11:style=Slanted;2
+font-2 = Fira Code Nerd Font:style=Bold:size=14;2
+font-3 = Orator Std:size=11:style=Medium;2
+height = 24 
+radius = 9
+;Works very well with a ;radius like this! Put it on every bar.
+background = ${colors.background}
+override-redirect=true
+offset-y = 3
+wm-restack = bspwm
+
+[bar/bspwm]
+inherit = bar/base
+width = 7.05%
+#foreground = ${colors.color1}
+offset-x = 45%
+modules-center = bspwm
+monitor = DP-1
+offset-y = 0.25%
+
+[bar/music]
+inherit = bar/base
+width = 18%
+foreground = ${colors.color2}
+offset-x = 8 
+modules-left = pulseaudio spotify_status
+radius = 6
+monitor = DP-1
+offset-y = 0.25%
+
+[bar/tray]
+inherit = bar/base
+width = 9%
+#width = 20.5%
+padding-right = 0
+offset-x = 90.8%
+modules-right = wireless-network date
+monitor = DP-1
+offset-y = 0.25%
+
+[bar/bspwm_small]
+inherit = bar/base
+width = 14.1%
+#foreground = ${colors.color1}
+offset-x = 45%
+modules-center = bspwm
+offset-y = 0.75%
+monitor = HDMI-1
+
+[bar/tray_small]
+inherit = bar/base
+width = 18%
+#width = 20.5%
+padding-right = 0
+offset-x = 72.8%
+offset-y = 0.75%
+modules-right = wireless-network date
+monitor = HDMI-1
+[module/bspwm]
+type = internal/bspwm
+format = <label-state> <label-mode>
+format-padding = 1
+format-background = ${colors.color1}
+format-foreground = ${colors.background}
+index-sort = true
+wrapping-scroll = false
+module-margin-left = 0
+module-margin-right = 0
+enable-click = true
+reverse-scroll = false
+
+label-focused = ∴
+label-focused-font = 3
+label-focused-foreground = ${colors.background}
+label-focused-padding = 1
+
+label-occupied = ∵
+label-occupied-font = 3 
+label-occupied-padding = 1
+label-occupied-foreground = ${colors.background}
+
+label-urgent =  ∙
+label-urgent-font = 3
+label-urgent-padding = 1
+label-urgent-foreground = ${colors.background}
+
+label-empty =  ∙
+label-empty-font = 3
+label-empty-padding = 1
+label-empty-foreground = ${colors.background}
+
+pin-workspaces = true
+
+[module/wireless-network]
+type = internal/network
+interface = wlan0
+label-connected = %essid% 
+label-connected-foreground = ${colors.color3}
+label-connected-background = ${colors.background}
+label-connected-padding = 1
+
+[module/spotify_status]
+label-font = %{T2}
+type = custom/script
+interval = 1
+format-prefix = "  "
+format = %{T2}<label>
+exec = python ~/.config/polybar/spotify_status.py -f '{artist} - {song}'
+label-foreground = ${colors.color2}
+label-background = ${colors.background}
+
+[module/date]
+type = internal/date
+interval = 5
+label = %time% 
+date-alt = %A, %d/%m/%Y
+time = %I:%M
+time-alt = %A, %d/%m/%Y
+;format-margin = 1
+label-foreground = ${colors.background}
+label-background = ${colors.color3}
+label-padding = 1
+
+[module/pulseaudio]
+label-font = %{T4}
+type = internal/pulseaudio
+#sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+sink = also_output.usb-0d8c_C-Media_USB_Headphone_Set-00.analog-stereo
+format-volume-prefix = "奔"
+format-volume-prefix-padding = 1
+format-volume = %{T4}<label-volume> 
+format-volume-padding = 0 
+label-volume-padding-right = 1
+label-volume-background = ${colors.color2}
+label-volume-foreground = ${colors.background}
+interval = 5
+format-volume-prefix-background = ${colors.color2}
+format-volume-prefix-foreground = ${colors.background}
+
+[settings]
+pseudo-transparency = true
